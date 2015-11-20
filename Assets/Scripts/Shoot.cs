@@ -17,9 +17,19 @@ public class Shoot : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	if(Input.GetKeyDown("r")||Input.GetMouseButtonDown(0)){
-			Rigidbody rigBod = ((GameObject)Instantiate(projectile,transform.position+transform.forward*distance,Quaternion.identity)).GetComponent<Rigidbody>();
-			rigBod.AddForce(cameraTrans.transform.forward*bulletForce, ForceMode.Impulse);
-		}
+        if (Input.GetKeyDown("r") || Input.GetMouseButtonDown(0)) {
+            if (!EnemySpawner.Over) {
+                Quaternion newRot = Quaternion.Euler(transform.eulerAngles + new Vector3(90, 0, 0));
+                Rigidbody rigBod = ((GameObject)Instantiate(projectile, transform.position + transform.forward * distance, newRot)).GetComponent<Rigidbody>();
+                rigBod.AddForce(cameraTrans.transform.forward * bulletForce, ForceMode.Impulse);
+            }
+            else {
+                EnemySpawner.Over = false;
+                EnemySpawner.score = 0;
+                EnemySpawner.health = 3;
+                Application.LoadLevel("sphere test");
+            }
+          
+        }
 	}
 }
